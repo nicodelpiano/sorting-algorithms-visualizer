@@ -36,7 +36,7 @@ function clearCanvas(ctx) {
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
 }
 
-function bubbleSort(array) {
+function selectionSort(array) {
   let steps = []
 
   for (var i = 0; i < array.length - 1; i++) {
@@ -53,7 +53,7 @@ function bubbleSort(array) {
     }
   }
 
-  // Completed bubbleSort with no swap positions
+  // Completed sort with no swap positions
   // to draw the final step
   steps.push({ array: [...array] })
 
@@ -76,6 +76,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   const values = Array(NUM_ELEMENTS).fill(0).map(e => Math.floor(Math.random()*MAX_VALUE))
 
-  const [sortedValues, steps] = bubbleSort(values)
+  const [sortedValues, steps] = selectionSort(values)
   drawSteps(ctx, steps)
 })
