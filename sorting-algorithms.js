@@ -3,11 +3,7 @@ export function bubbleSort(array) {
   for (let i = 0; i < array.length - 1; i++) {
     for (let j = 1; j < array.length - i; j++) {
       if (array[j] < array[j - 1]) {
-        swap(array, j, j - 1)
-        steps.push({
-          array: [...array],
-          swapPositions: [j, j - 1]
-        })
+        swapAndTrackSteps(array, j, j - 1, steps)
       }
     }
   }
@@ -22,11 +18,7 @@ export function insertionSort(array) {
   for (let i = 1; i < array.length; i++) {
     let j = i - 1
     while (j >= 0 && array[j + 1] < array[j]) {
-      swap(array, j + 1, j)
-      steps.push({
-        array: [...array],
-        swapPositions: [j, j + 1]
-      })
+      swapAndTrackSteps(array, j + 1, j, steps)
       j--
     }
   }
@@ -51,11 +43,7 @@ function quickSortHelper(array, startIndex, endIndex, steps = []) {
   let rightIndex = endIndex
   while (leftIndex <= rightIndex) {
     if (array[leftIndex] > array[rightIndex]) {
-      swap(array, leftIndex, rightIndex)
-      steps.push({
-        array: [...array],
-        swapPositions: [leftIndex, rightIndex]
-      })
+      swapAndTrackSteps(array, leftIndex, rightIndex, steps)
     }
     if (array[leftIndex] <= array[pivotIndex]) {
       leftIndex++
@@ -64,11 +52,7 @@ function quickSortHelper(array, startIndex, endIndex, steps = []) {
       rightIndex--
     }
   }
-  swap(array, pivotIndex, rightIndex)
-  steps.push({
-    array: [...array],
-    swapPositions: [pivotIndex, rightIndex]
-  })
+  swapAndTrackSteps(array, pivotIndex, rightIndex, steps)
   const isLeftSubarraySmaller =
     rightIndex - 1 - startIndex < endIndex - leftIndex - 1
   if (isLeftSubarraySmaller) {
@@ -90,11 +74,7 @@ export function selectionSort(array) {
         minIndex = j
       }
     }
-    swap(array, i, minIndex)
-    steps.push({
-      array: [...array],
-      swapPositions: [i, minIndex]
-    })
+    swapAndTrackSteps(array, i, minIndex, steps)
   }
   // Completed sort with no swap positions
   // to draw the final step
@@ -106,4 +86,12 @@ function swap(array, i, j) {
   const temp = array[i]
   array[i] = array[j]
   array[j] = temp
+}
+
+function swapAndTrackSteps(array, i, j, steps) {
+  swap(array, i, j)
+  steps.push({
+    array: [...array],
+    swapPositions: [i, j]
+  })
 }
