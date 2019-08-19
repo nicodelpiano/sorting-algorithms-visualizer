@@ -1,11 +1,16 @@
 export function bubbleSort(array) {
   let steps = []
-  for (let i = 0; i < array.length - 1; i++) {
+  let isSorted = false
+  let i = 0
+  while (!isSorted) {
+    isSorted = true
     for (let j = 1; j < array.length - i; j++) {
       if (array[j] < array[j - 1]) {
         swapAndTrackSteps(array, j, j - 1, steps)
+        isSorted = false
       }
     }
+    i++
   }
   // Completed sort with no swap positions
   // to draw the final step
@@ -31,6 +36,7 @@ export function insertionSort(array) {
 export function quickSort(array) {
   let steps = []
   quickSortHelper(array, 0, array.length - 1, steps)
+  steps.push({ array: [...array] })
   return [array, steps]
 }
 
@@ -62,7 +68,6 @@ function quickSortHelper(array, startIndex, endIndex, steps = []) {
     quickSortHelper(array, rightIndex + 1, endIndex, steps)
     quickSortHelper(array, startIndex, rightIndex - 1, steps)
   }
-  steps.push({ array: [...array] })
 }
 
 export function selectionSort(array) {

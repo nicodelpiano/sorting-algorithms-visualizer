@@ -9,13 +9,13 @@ import {
 const NUM_ELEMENTS = 50
 const MAX_VALUE = 100
 const MAX_RECT_WIDTH = 10
-const DEFAULT_SPEED = 100
+const DEFAULT_SPEED = 10
 const DEFAULT_RECT_COLOR = '#FF0000'
 const PIVOT_RECT_COLOR = '#FF00FF'
 const SWAPPED_RECT_COLOR = '#FFFF00'
 const CANVAS_BG_COLOR = '#FFF'
 const CANVAS_WIDTH = 1000
-const CANVAS_HEIGHT = 200
+const CANVAS_HEIGHT = 100
 
 function drawRect(ctx, x, y, height, color = DEFAULT_RECT_COLOR) {
   ctx.fillStyle = color
@@ -25,7 +25,7 @@ function drawRect(ctx, x, y, height, color = DEFAULT_RECT_COLOR) {
 function drawStep(ctx, step) {
   clearCanvas(ctx)
   let xPosition = 0
-  let yPosition = 0
+  let yPosition = CANVAS_HEIGHT
 
   const values = step.array
   const [i, j] = step.swapPositions || [-1, -1]
@@ -37,7 +37,7 @@ function drawStep(ctx, step) {
         : index === j
         ? SWAPPED_RECT_COLOR
         : DEFAULT_RECT_COLOR
-    drawRect(ctx, xPosition, yPosition, value, color)
+    drawRect(ctx, xPosition, yPosition, -value, color)
     xPosition += 2 * MAX_RECT_WIDTH
   }
 }
