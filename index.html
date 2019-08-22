@@ -1,14 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script type="module" src="script.js"></script>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <h1>Sorting Algorithms Visualizer</h1>
-    <p>
+
+<head>
+  <script type="module" src="app.js"></script>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <h1>Sorting Algorithms Visualizer</h1>
+      </div>
+      <ul class="menu">
+        <li><a href="#">QuickSort</a></li>
+        <li><a href="#">BubbleSort</a></li>
+        <li><a href="#">SelectionSort</a></li>
+        <li><a href="#">InsertionSort</a></li>
+      </ul>
+      <div class="burger">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+    </nav>
+    <p class="subheader">
       Small project to visualize sorting algorithms. The purpose was to play around drawing with canvas.
     </p>
-    <canvas id="myCanvas" style="border:1px solid #c3c3c3;" />
-  </body>
+  </header>
+  <main>
+    <div class="canvas-container">
+      <canvas id="myCanvas" class="canvas" />
+    </div>
+  </main>
+</body>
+
 </html>

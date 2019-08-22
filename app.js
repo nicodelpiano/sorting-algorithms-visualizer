@@ -6,16 +6,16 @@ import {
 } from './sorting-algorithms.js'
 
 // Constants
-const NUM_ELEMENTS = 50
-const MAX_VALUE = 100
-const MAX_RECT_WIDTH = 10
-const DEFAULT_SPEED = 10
+const MAX_RECT_WIDTH = 40
+const DEFAULT_SPEED = 1
 const DEFAULT_RECT_COLOR = '#FF0000'
 const PIVOT_RECT_COLOR = '#FF00FF'
 const SWAPPED_RECT_COLOR = '#FFFF00'
 const CANVAS_BG_COLOR = '#FFF'
-const CANVAS_WIDTH = 1000
-const CANVAS_HEIGHT = 100
+const CANVAS_WIDTH = 3000
+const CANVAS_HEIGHT = 600
+const MAX_VALUE = CANVAS_HEIGHT
+const NUM_ELEMENTS = Math.floor(CANVAS_WIDTH / (MAX_RECT_WIDTH * 2))
 
 function drawRect(ctx, x, y, height, color = DEFAULT_RECT_COLOR) {
   ctx.fillStyle = color
@@ -62,10 +62,44 @@ document.addEventListener('DOMContentLoaded', function(event) {
   canvas.height = CANVAS_HEIGHT
   const ctx = canvas.getContext('2d')
 
-  const values = Array(NUM_ELEMENTS)
-    .fill(0)
-    .map(e => Math.floor(Math.random() * MAX_VALUE))
+  const burger = document.querySelector('.burger')
+  const menu = document.querySelector('.menu')
+  const menuItems = document.querySelectorAll('.menu li')
 
-  const [sortedValues, steps] = quickSort(values)
-  drawSteps(ctx, steps)
+  menuItems.forEach((link, index) => {
+    link.addEventListener('click', () => {
+      const values = Array(NUM_ELEMENTS)
+        .fill(0)
+        .map(e => Math.floor(Math.random() * MAX_VALUE))
+
+      // TODO: Improve this by having a dinamic list in Javascript to build the menu
+      // in the html.
+      let sortingAlgorithm
+
+      switch (index) {
+        case 0:
+          sortingAlgorithm = quickSort
+          break
+        case 1:
+          sortingAlgorithm = bubbleSort
+          break
+        case 2:
+          sortingAlgorithm = selectionSort
+          break
+        case 3:
+          sortingAlgorithm = insertionSort
+          break
+        default:
+          sortingAlgorithm = quickSort
+      }
+
+      const [sortedValues, steps] = sortingAlgorithm(values)
+      drawSteps(ctx, steps)
+    })
+  })
+
+  burger.addEventListener('click', () => {
+    menu.classList.toggle('menu-active')
+    burger.classList.toggle('toggle')
+  })
 })
