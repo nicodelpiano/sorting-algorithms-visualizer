@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
         .fill(0)
         .map(e => Math.floor(Math.random() * MAX_VALUE))
 
-      // TODO: Improve this by having a dinamic list in Javascript to build the menu
+      // TODO: Improve this by having a dynamic list in Javascript to build the menu
       // in the html.
       let sortingAlgorithm
 
