@@ -65,36 +65,54 @@ document.addEventListener('DOMContentLoaded', function(event) {
   const burger = document.querySelector('.burger')
   const menu = document.querySelector('.menu')
   const menuItems = document.querySelectorAll('.menu li')
+  let isExecuting = false
+  let currentlyExecuting = ''
 
   menuItems.forEach((link, index) => {
-    link.addEventListener('click', () => {
-      const values = Array(NUM_ELEMENTS)
-        .fill(0)
-        .map(e => Math.floor(Math.random() * MAX_VALUE))
+    link.addEventListener('click', async () => {
+      if (!isExecuting) {
+        isExecuting = true
+        const values = Array(NUM_ELEMENTS)
+          .fill(0)
+          .map(e => Math.floor(Math.random() * MAX_VALUE))
 
-      // TODO: Improve this by having a dynamic list in Javascript to build the menu
-      // in the html.
-      let sortingAlgorithm
+        // TODO: Improve this by having a dynamic list in Javascript to build the menu
+        // in the html.
+        let sortingAlgorithm
 
-      switch (index) {
-        case 0:
-          sortingAlgorithm = quickSort
-          break
-        case 1:
-          sortingAlgorithm = bubbleSort
-          break
-        case 2:
-          sortingAlgorithm = selectionSort
-          break
-        case 3:
-          sortingAlgorithm = insertionSort
-          break
-        default:
-          sortingAlgorithm = quickSort
+        switch (index) {
+          case 0:
+            sortingAlgorithm = quickSort
+            currentlyExecuting = 'QuickSort'
+            break
+          case 1:
+            sortingAlgorithm = bubbleSort
+            currentlyExecuting = 'BubbleSort'
+            break
+          case 2:
+            sortingAlgorithm = selectionSort
+            currentlyExecuting = 'SelectionSort'
+            break
+          case 3:
+            sortingAlgorithm = insertionSort
+            currentlyExecuting = 'InsertionSort'
+            break
+          default:
+            sortingAlgorithm = quickSort
+            currentlyExecuting = 'QuickSort'
+        }
+
+        document.getElementById('myWarning').innerText = "Currently executing: " +  currentlyExecuting + "."
+
+        const [sortedValues, steps] = sortingAlgorithm(values)
+        await drawSteps(ctx, steps)
+
+        isExecuting = false
+        document.getElementById('myWarning').innerText = "Finished executing: " +  currentlyExecuting + "."
+        currentlyExecuting = ''
+      } else {
+        document.getElementById('myWarning').innerText = "Currently executing: " +  currentlyExecuting + ". Please wait."
       }
-
-      const [sortedValues, steps] = sortingAlgorithm(values)
-      drawSteps(ctx, steps)
     })
   })
 
