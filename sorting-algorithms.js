@@ -100,7 +100,7 @@ function swapAndTrackSteps(array, i, j, steps) {
     swapPositions: [i, j]
   });
 }
-
+//Merge Sort
 export function mergesort(arr) {
   if (arr.length < 2) {
     return arr;
