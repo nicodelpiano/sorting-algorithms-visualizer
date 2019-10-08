@@ -16,6 +16,7 @@ const CANVAS_WIDTH = 3000
 const CANVAS_HEIGHT = 600
 const MAX_VALUE = CANVAS_HEIGHT
 const NUM_ELEMENTS = Math.floor(CANVAS_WIDTH / (MAX_RECT_WIDTH * 2))
+let stepsTaken = 0;
 
 function drawRect(ctx, x, y, height, color = DEFAULT_RECT_COLOR) {
   ctx.fillStyle = color
@@ -30,13 +31,16 @@ function drawStep(ctx, step) {
   const values = step.array
   const [i, j] = step.swapPositions || [-1, -1]
 
+  document.getElementById('mySteps').innerText = `Steps taken: ${stepsTaken}`
+  stepsTaken += 1
+
   for (const [index, value] of values.entries()) {
     const color =
       index === i
         ? PIVOT_RECT_COLOR
         : index === j
-        ? SWAPPED_RECT_COLOR
-        : DEFAULT_RECT_COLOR
+          ? SWAPPED_RECT_COLOR
+          : DEFAULT_RECT_COLOR
     drawRect(ctx, xPosition, yPosition, -value, color)
     xPosition += 2 * MAX_RECT_WIDTH
   }
@@ -56,7 +60,7 @@ async function drawSteps(ctx, steps, speed = DEFAULT_SPEED) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function(event) {
+document.addEventListener('DOMContentLoaded', function (event) {
   const canvas = document.getElementById('myCanvas')
   canvas.width = CANVAS_WIDTH
   canvas.height = CANVAS_HEIGHT
@@ -84,34 +88,40 @@ document.addEventListener('DOMContentLoaded', function(event) {
           case 0:
             sortingAlgorithm = quickSort
             currentlyExecuting = 'QuickSort'
+            stepsTaken = 0
             break
           case 1:
             sortingAlgorithm = bubbleSort
             currentlyExecuting = 'BubbleSort'
+            stepsTaken = 0
             break
           case 2:
             sortingAlgorithm = selectionSort
             currentlyExecuting = 'SelectionSort'
+            stepsTaken = 0
             break
           case 3:
             sortingAlgorithm = insertionSort
             currentlyExecuting = 'InsertionSort'
+            stepsTaken = 0
             break
           default:
             sortingAlgorithm = quickSort
             currentlyExecuting = 'QuickSort'
+            stepsTaken = 0
         }
 
-        document.getElementById('myWarning').innerText = "Currently executing: " +  currentlyExecuting + "."
+        document.getElementById('myWarning').innerText = `Currently executing: ${currentlyExecuting}.`
 
         const [sortedValues, steps] = sortingAlgorithm(values)
+
         await drawSteps(ctx, steps)
 
         isExecuting = false
-        document.getElementById('myWarning').innerText = "Finished executing: " +  currentlyExecuting + "."
+        document.getElementById('myWarning').innerText = `Finished executing: ${currentlyExecuting}.`
         currentlyExecuting = ''
       } else {
-        document.getElementById('myWarning').innerText = "Currently executing: " +  currentlyExecuting + ". Please wait."
+        document.getElementById('myWarning').innerText = `Currently executing: ${currentlyExecuting}. Please wait.`
       }
     })
   })
