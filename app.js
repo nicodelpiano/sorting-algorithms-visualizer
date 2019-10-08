@@ -16,6 +16,49 @@ const CANVAS_WIDTH = 3000
 const CANVAS_HEIGHT = 600
 const MAX_VALUE = CANVAS_HEIGHT
 const NUM_ELEMENTS = Math.floor(CANVAS_WIDTH / (MAX_RECT_WIDTH * 2))
+let stop = false;
+let lastCtx;
+let laststeps;
+let lastspeed;
+let lastindex = -1;
+
+setDisplay(false);
+
+function setDisplay(stopping) {
+  if (stopping) {
+    let el = document.getElementById("start");
+    el.style.display = 'unset';
+    el = document.getElementById("stop");
+    el.style.display = 'none';
+    stop = true;
+  }
+  else {
+    let el = document.getElementById("stop");
+    el.style.display = 'unset';
+    el = document.getElementById("start");
+    el.style.display = 'none';
+    stop = false;
+  }
+}
+
+document.getElementById("start").addEventListener("click", function () {
+  setDisplay(false);
+  if (lastindex >= 0) {
+    drawSteps(lastCtx, laststeps, lastindex, lastspeed).then(function (index) {
+      console.log('index', index);
+      lastindex = index;
+    })
+  }
+});
+
+document.getElementById("stop").addEventListener("click", function () {
+  // document.getElementById("demo").innerHTML = "Hello World";
+  setDisplay(true);
+});
+
+
+
+
 
 function drawRect(ctx, x, y, height, color = DEFAULT_RECT_COLOR) {
   ctx.fillStyle = color
@@ -26,17 +69,19 @@ function drawStep(ctx, step) {
   clearCanvas(ctx)
   let xPosition = 0
   let yPosition = CANVAS_HEIGHT
-
+  
   const values = step.array
   const [i, j] = step.swapPositions || [-1, -1]
-
+  
+  //console.log('valuse', values.entries());
   for (const [index, value] of values.entries()) {
+    
     const color =
-      index === i
-        ? PIVOT_RECT_COLOR
-        : index === j
-        ? SWAPPED_RECT_COLOR
-        : DEFAULT_RECT_COLOR
+    index === i
+    ? PIVOT_RECT_COLOR
+    : index === j
+    ? SWAPPED_RECT_COLOR
+    : DEFAULT_RECT_COLOR
     drawRect(ctx, xPosition, yPosition, -value, color)
     xPosition += 2 * MAX_RECT_WIDTH
   }
@@ -48,23 +93,35 @@ function clearCanvas(ctx) {
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
 }
 
-async function drawSteps(ctx, steps, speed = DEFAULT_SPEED) {
-  for (const step of steps) {
+
+
+async function drawSteps(ctx, steps, index = 0, speed = DEFAULT_SPEED) {
+  lastCtx = ctx;
+  laststeps = steps;
+  lastspeed = speed;
+  let i;
+  for (i = index; i < steps.length; i++) {
+    if (stop) {
+      return i;
+    }
     await new Promise((resolve, reject) => {
-      setTimeout(() => resolve(drawStep(ctx, step)), speed)
+      setTimeout(() => resolve(drawStep(ctx, steps[i])), speed)
     })
+    
   }
+  return -1;
 }
 
-document.addEventListener('DOMContentLoaded', function(event) {
+document.addEventListener('DOMContentLoaded', function (event) {
   const canvas = document.getElementById('myCanvas')
   canvas.width = CANVAS_WIDTH
   canvas.height = CANVAS_HEIGHT
   const ctx = canvas.getContext('2d')
-
+  
   const burger = document.querySelector('.burger')
   const menu = document.querySelector('.menu')
   const menuItems = document.querySelectorAll('.menu li')
+
   let isExecuting = false
   let currentlyExecuting = ''
 
@@ -115,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       }
     })
   })
-
+  
   burger.addEventListener('click', () => {
     menu.classList.toggle('menu-active')
     burger.classList.toggle('toggle')

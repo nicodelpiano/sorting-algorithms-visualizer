@@ -60,7 +60,7 @@ function quickSortHelper(array, startIndex, endIndex, steps = []) {
   }
   swapAndTrackSteps(array, pivotIndex, rightIndex, steps)
   const isLeftSubarraySmaller =
-    rightIndex - 1 - startIndex < endIndex - leftIndex - 1
+  rightIndex - 1 - startIndex < endIndex - leftIndex - 1
   if (isLeftSubarraySmaller) {
     quickSortHelper(array, startIndex, rightIndex - 1, steps)
     quickSortHelper(array, rightIndex + 1, endIndex, steps)
