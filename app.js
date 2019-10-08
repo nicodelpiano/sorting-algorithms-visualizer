@@ -1,8 +1,8 @@
 import {
-    bubbleSort,
-    selectionSort,
-    quickSort,
-    insertionSort
+  bubbleSort,
+  selectionSort,
+  quickSort,
+  insertionSort
 } from './sorting-algorithms.js'
 
 // Constants
@@ -25,35 +25,35 @@ let lastindex = -1;
 setDisplay(false);
 
 function setDisplay(stopping) {
-    if (stopping) {
-        let el = document.getElementById("start");
-        el.style.display = 'unset';
-        el = document.getElementById("stop");
-        el.style.display = 'none';
-        stop = true;
-    }
-    else {
-        let el = document.getElementById("stop");
-        el.style.display = 'unset';
-        el = document.getElementById("start");
-        el.style.display = 'none';
-        stop = false;
-    }
+  if (stopping) {
+    let el = document.getElementById("start");
+    el.style.display = 'unset';
+    el = document.getElementById("stop");
+    el.style.display = 'none';
+    stop = true;
+  }
+  else {
+    let el = document.getElementById("stop");
+    el.style.display = 'unset';
+    el = document.getElementById("start");
+    el.style.display = 'none';
+    stop = false;
+  }
 }
 
 document.getElementById("start").addEventListener("click", function () {
-    setDisplay(false);
-    if (lastindex >= 0) {
-        drawSteps(lastCtx, laststeps, lastindex, lastspeed).then(function (index) {
-            console.log('index', index);
-            lastindex = index;
-        })
-    }
+  setDisplay(false);
+  if (lastindex >= 0) {
+    drawSteps(lastCtx, laststeps, lastindex, lastspeed).then(function (index) {
+      console.log('index', index);
+      lastindex = index;
+    })
+  }
 });
 
 document.getElementById("stop").addEventListener("click", function () {
-    // document.getElementById("demo").innerHTML = "Hello World";
-    setDisplay(true);
+  // document.getElementById("demo").innerHTML = "Hello World";
+  setDisplay(true);
 });
 
 
@@ -61,103 +61,103 @@ document.getElementById("stop").addEventListener("click", function () {
 
 
 function drawRect(ctx, x, y, height, color = DEFAULT_RECT_COLOR) {
-    ctx.fillStyle = color
-    ctx.fillRect(x, y, MAX_RECT_WIDTH, height)
+  ctx.fillStyle = color
+  ctx.fillRect(x, y, MAX_RECT_WIDTH, height)
 }
 
 function drawStep(ctx, step) {
-    clearCanvas(ctx)
-    let xPosition = 0
-    let yPosition = CANVAS_HEIGHT
-
-    const values = step.array
-    const [i, j] = step.swapPositions || [-1, -1]
-
-    //console.log('valuse', values.entries());
-    for (const [index, value] of values.entries()) {
-
-        const color =
-            index === i
-                ? PIVOT_RECT_COLOR
-                : index === j
-                    ? SWAPPED_RECT_COLOR
-                    : DEFAULT_RECT_COLOR
-        drawRect(ctx, xPosition, yPosition, -value, color)
-        xPosition += 2 * MAX_RECT_WIDTH
-    }
+  clearCanvas(ctx)
+  let xPosition = 0
+  let yPosition = CANVAS_HEIGHT
+  
+  const values = step.array
+  const [i, j] = step.swapPositions || [-1, -1]
+  
+  //console.log('valuse', values.entries());
+  for (const [index, value] of values.entries()) {
+    
+    const color =
+    index === i
+    ? PIVOT_RECT_COLOR
+    : index === j
+    ? SWAPPED_RECT_COLOR
+    : DEFAULT_RECT_COLOR
+    drawRect(ctx, xPosition, yPosition, -value, color)
+    xPosition += 2 * MAX_RECT_WIDTH
+  }
 }
 
 // To be able to re-draw on canvas
 function clearCanvas(ctx) {
-    ctx.fillStyle = CANVAS_BG_COLOR
-    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+  ctx.fillStyle = CANVAS_BG_COLOR
+  ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
 }
 
 
 
 async function drawSteps(ctx, steps, index = 0, speed = DEFAULT_SPEED) {
-    lastCtx = ctx;
-    laststeps = steps;
-    lastspeed = speed;
-    let i;
-    for (i = index; i < steps.length; i++) {
-        if (stop) {
-            return i;
-        }
-        await new Promise((resolve, reject) => {
-            setTimeout(() => resolve(drawStep(ctx, steps[i])), speed)
-        })
-
+  lastCtx = ctx;
+  laststeps = steps;
+  lastspeed = speed;
+  let i;
+  for (i = index; i < steps.length; i++) {
+    if (stop) {
+      return i;
     }
-    return -1;
+    await new Promise((resolve, reject) => {
+      setTimeout(() => resolve(drawStep(ctx, steps[i])), speed)
+    })
+    
+  }
+  return -1;
 }
 
 document.addEventListener('DOMContentLoaded', function (event) {
-    const canvas = document.getElementById('myCanvas')
-    canvas.width = CANVAS_WIDTH
-    canvas.height = CANVAS_HEIGHT
-    const ctx = canvas.getContext('2d')
-
-    const burger = document.querySelector('.burger')
-    const menu = document.querySelector('.menu')
-    const menuItems = document.querySelectorAll('.menu li')
-
-    menuItems.forEach((link, index) => {
-        link.addEventListener('click', () => {
-            const values = Array(NUM_ELEMENTS)
-                .fill(0)
-                .map(e => Math.floor(Math.random() * MAX_VALUE))
-
-            // TODO: Improve this by having a dynamic list in Javascript to build the menu
-            // in the html.
-            let sortingAlgorithm
-
-            switch (index) {
-                case 0:
-                    sortingAlgorithm = quickSort
-                    break
-                case 1:
-                    sortingAlgorithm = bubbleSort
-                    break
-                case 2:
-                    sortingAlgorithm = selectionSort
-                    break
-                case 3:
-                    sortingAlgorithm = insertionSort
-                    break
-                default:
-                    sortingAlgorithm = quickSort
-            }
-
-            const [sortedValues, steps] = sortingAlgorithm(values)
-            drawSteps(ctx, steps).then(function (index) {
-                lastindex = index;
-            })
-        })
+  const canvas = document.getElementById('myCanvas')
+  canvas.width = CANVAS_WIDTH
+  canvas.height = CANVAS_HEIGHT
+  const ctx = canvas.getContext('2d')
+  
+  const burger = document.querySelector('.burger')
+  const menu = document.querySelector('.menu')
+  const menuItems = document.querySelectorAll('.menu li')
+  
+  menuItems.forEach((link, index) => {
+    link.addEventListener('click', () => {
+      const values = Array(NUM_ELEMENTS)
+      .fill(0)
+      .map(e => Math.floor(Math.random() * MAX_VALUE))
+      
+      // TODO: Improve this by having a dynamic list in Javascript to build the menu
+      // in the html.
+      let sortingAlgorithm
+      
+      switch (index) {
+        case 0:
+        sortingAlgorithm = quickSort
+        break
+        case 1:
+        sortingAlgorithm = bubbleSort
+        break
+        case 2:
+        sortingAlgorithm = selectionSort
+        break
+        case 3:
+        sortingAlgorithm = insertionSort
+        break
+        default:
+        sortingAlgorithm = quickSort
+      }
+      
+      const [sortedValues, steps] = sortingAlgorithm(values)
+      drawSteps(ctx, steps).then(function (index) {
+        lastindex = index;
+      })
     })
-
-    burger.addEventListener('click', () => {
-        menu.classList.toggle('menu-active')
-        burger.classList.toggle('toggle')
-    })
+  })
+  
+  burger.addEventListener('click', () => {
+    menu.classList.toggle('menu-active')
+    burger.classList.toggle('toggle')
+  })
 })
