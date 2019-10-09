@@ -8,6 +8,7 @@ import {
 // Constants
 const MAX_RECT_WIDTH = 40
 const DEFAULT_SPEED = 1
+const MAX_SPEED = 500;
 const DEFAULT_RECT_COLOR = '#FF0000'
 const PIVOT_RECT_COLOR = '#FF00FF'
 const SWAPPED_RECT_COLOR = '#FFFF00'
@@ -16,6 +17,7 @@ const CANVAS_WIDTH = 3000
 const CANVAS_HEIGHT = 600
 const MAX_VALUE = CANVAS_HEIGHT
 const NUM_ELEMENTS = Math.floor(CANVAS_WIDTH / (MAX_RECT_WIDTH * 2))
+let SPEED = null;
 
 function drawRect(ctx, x, y, height, color = DEFAULT_RECT_COLOR) {
   ctx.fillStyle = color
@@ -75,6 +77,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
   let isExecuting = false
   let currentlyExecuting = ''
 
+  const speedControl = document.querySelector('#speed-input');
+
   menuItems.forEach((link, index) => {
     link.addEventListener('click', async () => {
       if (!isExecuting) {
@@ -113,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
         const [sortedValues, steps] = sortingAlgorithm(values)
 
-        await drawSteps(ctx, steps)
+        await drawSteps(ctx, steps, SPEED)
         isExecuting = false
         document.getElementById('myWarning').innerText = `Finished executing: ${currentlyExecuting}.`
         currentlyExecuting = ''
@@ -127,4 +131,15 @@ document.addEventListener('DOMContentLoaded', function(event) {
     menu.classList.toggle('menu-active')
     burger.classList.toggle('toggle')
   })
+
+  // prevent inputting invalid characters and typing in number higher than max speed
+  speedControl.addEventListener("keydown", (e) => {
+    const invalidChars = [ '-', '+', 'e', 'E', '.', ',' ];
+    return (invalidChars.includes(e.key) || Number(`${e.target.value}${e.key}`) > MAX_SPEED) && e.preventDefault();
+  });
+
+  // prevent leaving number input empty
+  speedControl.addEventListener("blur", (e) => !e.target.value && (e.target.value = 50));
+  
+  speedControl.addEventListener("input", (e) => e.target.value <= MAX_SPEED && (SPEED = e.target.value));
 })
