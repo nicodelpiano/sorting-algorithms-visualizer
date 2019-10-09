@@ -2,7 +2,7 @@
 
 Small project to visualize sorting algorithms. The purpose was to play around drawing with canvas.
 
-![Bubble Sort](/sample/sample2.gif)
+![Bubble Sort](/sample/sample.gif)
 
 ### Run
 
