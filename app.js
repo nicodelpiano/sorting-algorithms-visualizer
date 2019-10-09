@@ -16,7 +16,6 @@ const CANVAS_WIDTH = 3000
 const CANVAS_HEIGHT = 600
 const MAX_VALUE = CANVAS_HEIGHT
 const NUM_ELEMENTS = Math.floor(CANVAS_WIDTH / (MAX_RECT_WIDTH * 2))
-let stepsTaken = 0;
 
 function drawRect(ctx, x, y, height, color = DEFAULT_RECT_COLOR) {
   ctx.fillStyle = color
@@ -30,9 +29,6 @@ function drawStep(ctx, step) {
 
   const values = step.array
   const [i, j] = step.swapPositions || [-1, -1]
-
-  document.getElementById('mySteps').innerText = `Steps taken: ${stepsTaken}`
-  stepsTaken += 1
 
   for (const [index, value] of values.entries()) {
     const color =
@@ -88,27 +84,22 @@ document.addEventListener('DOMContentLoaded', function (event) {
           case 0:
             sortingAlgorithm = quickSort
             currentlyExecuting = 'QuickSort'
-            stepsTaken = 0
             break
           case 1:
             sortingAlgorithm = bubbleSort
             currentlyExecuting = 'BubbleSort'
-            stepsTaken = 0
             break
           case 2:
             sortingAlgorithm = selectionSort
             currentlyExecuting = 'SelectionSort'
-            stepsTaken = 0
             break
           case 3:
             sortingAlgorithm = insertionSort
             currentlyExecuting = 'InsertionSort'
-            stepsTaken = 0
             break
           default:
             sortingAlgorithm = quickSort
             currentlyExecuting = 'QuickSort'
-            stepsTaken = 0
         }
 
         document.getElementById('myWarning').innerText = `Currently executing: ${currentlyExecuting}.`
