@@ -49,14 +49,21 @@ function clearCanvas(ctx) {
 }
 
 async function drawSteps(ctx, steps, speed = DEFAULT_SPEED) {
+  let stepCount = 0
   for (const step of steps) {
     await new Promise((resolve, reject) => {
       setTimeout(() => resolve(drawStep(ctx, step)), speed)
     })
+    stepCount++
+    drawCurrentStep(stepCount, steps.length)    
   }
 }
 
-document.addEventListener('DOMContentLoaded', function (event) {
+function drawCurrentStep(currentStep, totalSteps) {
+  document.getElementById('currentStep').innerText = `Current Step: ${currentStep} / ${totalSteps}`
+}
+
+document.addEventListener('DOMContentLoaded', function(event) {
   const canvas = document.getElementById('myCanvas')
   canvas.width = CANVAS_WIDTH
   canvas.height = CANVAS_HEIGHT
@@ -107,7 +114,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
         const [sortedValues, steps] = sortingAlgorithm(values)
 
         await drawSteps(ctx, steps)
-
         isExecuting = false
         document.getElementById('myWarning').innerText = `Finished executing: ${currentlyExecuting}.`
         currentlyExecuting = ''
