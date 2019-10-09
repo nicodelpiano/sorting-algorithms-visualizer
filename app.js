@@ -74,6 +74,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
   const menuItems = document.querySelectorAll('.menu li')
   let isExecuting = false
   let currentlyExecuting = ''
+  const speedSlider = document.getElementById('speed');
+  let speedValue = 100 - parseInt(speedSlider.value)
+  speedSlider.oninput = function() {
+    speedValue = 100 - parseInt(this.value)
+  }
 
   menuItems.forEach((link, index) => {
     link.addEventListener('click', async () => {
@@ -113,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
         const [sortedValues, steps] = sortingAlgorithm(values)
 
-        await drawSteps(ctx, steps)
+        await drawSteps(ctx, steps, speedValue)
         isExecuting = false
         document.getElementById('myWarning').innerText = `Finished executing: ${currentlyExecuting}.`
         currentlyExecuting = ''
