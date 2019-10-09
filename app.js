@@ -35,8 +35,8 @@ function drawStep(ctx, step) {
       index === i
         ? PIVOT_RECT_COLOR
         : index === j
-        ? SWAPPED_RECT_COLOR
-        : DEFAULT_RECT_COLOR
+          ? SWAPPED_RECT_COLOR
+          : DEFAULT_RECT_COLOR
     drawRect(ctx, xPosition, yPosition, -value, color)
     xPosition += 2 * MAX_RECT_WIDTH
   }
@@ -109,16 +109,16 @@ document.addEventListener('DOMContentLoaded', function(event) {
             currentlyExecuting = 'QuickSort'
         }
 
-        document.getElementById('myWarning').innerText = "Currently executing: " +  currentlyExecuting + "."
+        document.getElementById('myWarning').innerText = `Currently executing: ${currentlyExecuting}.`
 
         const [sortedValues, steps] = sortingAlgorithm(values)
-        
+
         await drawSteps(ctx, steps)
         isExecuting = false
-        document.getElementById('myWarning').innerText = "Finished executing: " +  currentlyExecuting + "."
+        document.getElementById('myWarning').innerText = `Finished executing: ${currentlyExecuting}.`
         currentlyExecuting = ''
       } else {
-        document.getElementById('myWarning').innerText = "Currently executing: " +  currentlyExecuting + ". Please wait."
+        document.getElementById('myWarning').innerText = `Currently executing: ${currentlyExecuting}. Please wait.`
       }
     })
   })
