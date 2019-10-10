@@ -77,12 +77,16 @@ document.addEventListener('DOMContentLoaded', function(event) {
   let isExecuting = false
   let currentlyExecuting = ''
   const speedSlider = document.getElementById('speed');
-  let speedValue = 100 - parseInt(speedSlider.value)
-  speedSlider.oninput = function() {
-    speedValue = 100 - parseInt(this.value)
-  }
-
   const speedControl = document.querySelector('#speed-input');
+  let speedValue = MAX_SPEED + 1 - parseInt(speedSlider.value)
+  speedSlider.oninput = function() {
+    speedValue = MAX_SPEED + 1 - parseInt(this.value)
+    speedControl.value = parseInt(this.value)
+  }
+  speedControl.oninput = function() {
+    speedValue = MAX_SPEED + 1 - parseInt(this.value)
+    speedSlider.value = parseInt(this.value)
+  }
 
   menuItems.forEach((link, index) => {
     link.addEventListener('click', async () => {
