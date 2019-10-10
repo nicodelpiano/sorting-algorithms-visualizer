@@ -1,102 +1,129 @@
 export function bubbleSort(array) {
-  let steps = []
-  let isSorted = false
-  let i = 0
+  let steps = [];
+  let isSorted = false;
+  let i = 0;
   while (!isSorted) {
-    isSorted = true
+    isSorted = true;
     for (let j = 1; j < array.length - i; j++) {
       if (array[j] < array[j - 1]) {
-        swapAndTrackSteps(array, j, j - 1, steps)
-        isSorted = false
+        swapAndTrackSteps(array, j, j - 1, steps);
+        isSorted = false;
       }
     }
-    i++
+    i++;
   }
   // Completed sort with no swap positions
   // to draw the final step
-  steps.push({ array: [...array] })
-  return [array, steps]
+  steps.push({ array: [...array] });
+  return [array, steps];
 }
 
 export function insertionSort(array) {
-  let steps = []
+  let steps = [];
   for (let i = 1; i < array.length; i++) {
-    let j = i - 1
+    let j = i - 1;
     while (j >= 0 && array[j + 1] < array[j]) {
-      swapAndTrackSteps(array, j + 1, j, steps)
-      j--
+      swapAndTrackSteps(array, j + 1, j, steps);
+      j--;
     }
   }
   // Completed sort with no swap positions
   // to draw the final step
-  steps.push({ array: [...array] })
-  return [array, steps]
+  steps.push({ array: [...array] });
+  return [array, steps];
 }
 
 export function quickSort(array) {
-  let steps = []
-  quickSortHelper(array, 0, array.length - 1, steps)
-  steps.push({ array: [...array] })
-  return [array, steps]
+  let steps = [];
+  quickSortHelper(array, 0, array.length - 1, steps);
+  steps.push({ array: [...array] });
+  return [array, steps];
 }
 
 function quickSortHelper(array, startIndex, endIndex, steps = []) {
   if (startIndex >= endIndex) {
-    return
+    return;
   }
-  const pivotIndex = startIndex
-  let leftIndex = startIndex + 1
-  let rightIndex = endIndex
+  const pivotIndex = startIndex;
+  let leftIndex = startIndex + 1;
+  let rightIndex = endIndex;
   while (leftIndex <= rightIndex) {
     if (array[leftIndex] > array[rightIndex]) {
-      swapAndTrackSteps(array, leftIndex, rightIndex, steps)
+      swapAndTrackSteps(array, leftIndex, rightIndex, steps);
     }
     if (array[leftIndex] <= array[pivotIndex]) {
-      leftIndex++
+      leftIndex++;
     }
     if (array[rightIndex] >= array[pivotIndex]) {
-      rightIndex--
+      rightIndex--;
     }
   }
-  swapAndTrackSteps(array, pivotIndex, rightIndex, steps)
+  swapAndTrackSteps(array, pivotIndex, rightIndex, steps);
   const isLeftSubarraySmaller =
-    rightIndex - 1 - startIndex < endIndex - leftIndex - 1
+    rightIndex - 1 - startIndex < endIndex - leftIndex - 1;
   if (isLeftSubarraySmaller) {
-    quickSortHelper(array, startIndex, rightIndex - 1, steps)
-    quickSortHelper(array, rightIndex + 1, endIndex, steps)
+    quickSortHelper(array, startIndex, rightIndex - 1, steps);
+    quickSortHelper(array, rightIndex + 1, endIndex, steps);
   } else {
-    quickSortHelper(array, rightIndex + 1, endIndex, steps)
-    quickSortHelper(array, startIndex, rightIndex - 1, steps)
+    quickSortHelper(array, rightIndex + 1, endIndex, steps);
+    quickSortHelper(array, startIndex, rightIndex - 1, steps);
   }
 }
 
 export function selectionSort(array) {
-  let steps = []
+  let steps = [];
   for (var i = 0; i < array.length - 1; i++) {
-    let minIndex = i
+    let minIndex = i;
     for (var j = i; j < array.length; j++) {
       if (array[minIndex] > array[j]) {
-        minIndex = j
+        minIndex = j;
       }
     }
-    swapAndTrackSteps(array, i, minIndex, steps)
+    swapAndTrackSteps(array, i, minIndex, steps);
   }
   // Completed sort with no swap positions
   // to draw the final step
-  steps.push({ array: [...array] })
-  return [array, steps]
+  steps.push({ array: [...array] });
+  return [array, steps];
 }
 
 function swap(array, i, j) {
-  const temp = array[i]
-  array[i] = array[j]
-  array[j] = temp
+  const temp = array[i];
+  array[i] = array[j];
+  array[j] = temp;
 }
 
 function swapAndTrackSteps(array, i, j, steps) {
-  swap(array, i, j)
+  swap(array, i, j);
   steps.push({
     array: [...array],
     swapPositions: [i, j]
-  })
+  });
+}
+//Merge Sort
+export function mergesort(arr) {
+  if (arr.length < 2) {
+    return arr;
+  } else {
+    var midpoint = parseInt(arr.length / 2);
+    var leftArr = arr.slice(0, midpoint);
+    var rightArr = arr.slice(midpoint, arr.length);
+    return merge(mergesort(leftArr), mergesort(rightArr));
+  }
+}
+
+function merge(leftArr, rightArr) {
+  var sortedArr = [];
+  while (leftArr.length && rightArr.length) {
+    if (leftArr[0] <= rightArr[0]) {
+      sortedArr.push(leftArr[0]);
+      leftArr = leftArr.slice(1);
+    } else {
+      sortedArr.push(rightArr[0]);
+      rightArr = rightArr.slice(1);
+    }
+  }
+  while (leftArr.length) sortedArr.push(leftArr.shift());
+  while (rightArr.length) sortedArr.push(rightArr.shift());
+  return sortedArr;
 }
